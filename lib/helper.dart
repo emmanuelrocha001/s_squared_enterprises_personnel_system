@@ -31,9 +31,7 @@ class Helper extends StatelessWidget {
       );
     }).then((value) {
       if(value != null) {
-        showMessageTop(context, value);
-      } else {
-        showMessageTop(context, 'Hello this is a test');
+        showMessageTop(context, value['message'], error: value['error']);
       }
     });
   }
@@ -43,21 +41,13 @@ class Helper extends StatelessWidget {
     // final styleTheme = Theme.of(context);
     Flushbar(
       backgroundColor: Colors.white,
-      messageText: Text(message, style: TextStyle(color: Colors.blue),),
+      messageText: Text(message, style: TextStyle(color: error ? Colors.red : Colors.green),),
 
       duration: new Duration(seconds: 2),
       margin: EdgeInsets.all(8),
       maxWidth: 400,
       flushbarPosition: FlushbarPosition.TOP,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-      // boxShadows: [
-      //   BoxShadow(
-
-      //     color: Colors.black.withOpacity(.45),
-      //     offset: Offset(3,3),
-      //     blurRadius: 3
-      //   )
-      // ],
 
       borderRadius: 8,
       // title: 'Error message:',

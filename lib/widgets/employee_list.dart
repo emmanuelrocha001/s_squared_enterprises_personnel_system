@@ -1,4 +1,5 @@
 
+import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/personnel.dart';
@@ -35,9 +36,14 @@ class _EmployeeListState extends State<EmployeeList> {
 
   @override
   Widget build(BuildContext context) {
+
+    final personnel = Provider.of<Personnel>(context);
+    final employees = personnel.employees;
+    final mediaQuery = MediaQuery.of(context);
     return Container(
-      height: 500,
-      width: 400,
+      color: Colors.grey.withOpacity(.1),
+      // height: 500,
+      width: Math.min(600, mediaQuery.size.width),
       child: Column(
         children: [
           Card(
@@ -48,16 +54,16 @@ class _EmployeeListState extends State<EmployeeList> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Employee ID'),
-                  Text('Last Name'),
-                  Text('First Name'),
+                  Entrie('Employee ID'),
+                  Entrie('Last Name'),
+                  Entrie('First Name'),
                 ],
               ),
             ),
           ),
 
           Container(
-            width: 400,
+            width: Math.min(600, mediaQuery.size.width),
             height: 400,
             child: Scrollbar(
               child: ListView.builder(
@@ -65,9 +71,7 @@ class _EmployeeListState extends State<EmployeeList> {
                 // controller: ,
                 itemCount: employees.length,
                 itemBuilder: (context,index) => EmployeeItem(
-                  id: employees[index].id,
-                  firstName: employees[index].firstName,
-                  lastName: employees[index].lastName,
+                  employee: employees[index],
                 ),
               ),
             ),

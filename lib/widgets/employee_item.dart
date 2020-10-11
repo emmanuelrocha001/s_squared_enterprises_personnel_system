@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
+import '../providers/personnel.dart';
 
 
+class Entrie extends StatelessWidget {
+  final content;
+  Entrie(this.content);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Container(
+          alignment: Alignment.centerLeft,
+          child: Text(content),
+      ),
+    );
+  }
+}
 class EmployeeItem extends StatelessWidget {
-  final id;
-  final firstName;
-  final lastName;
+  final Employee employee;
   EmployeeItem({
-    @required this.id,
-    @required this.firstName,
-    @required this.lastName,
+    @required this.employee
   });
 
   @override
   Widget build(BuildContext context) {
+    print(employee);
     return Card(
       margin: EdgeInsets.all(8),
       child: Padding(
@@ -21,9 +33,10 @@ class EmployeeItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(id),
-            Text(lastName),
-            Text(firstName),
+            Entrie(employee.employeeID != '' ? employee.employeeID : employee.id),
+            Entrie(this.employee.firstName),
+            Entrie(this.employee.lastName),
+
           ],
         ),
       ),
