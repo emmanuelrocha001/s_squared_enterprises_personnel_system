@@ -12,12 +12,13 @@ class ManagerSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final _managers = Provider.of<Personnel>(context, listen: false).managers;
+    final _managers = Provider.of<Personnel>(context,).managers;
+    print(_managers);
     return Container(
       // color: Colors.red,
       width: 400,
       child: ListTile(
-        leading: Text('Manager:', style: TextStyle(color: Colors.grey[600]),),
+        leading: Text('Manager:', style: TextStyle( color: Colors.grey[600], fontSize: 16)),
 
         title: DropdownButtonFormField(
 
@@ -27,20 +28,18 @@ class ManagerSelector extends StatelessWidget {
 
           dropdownColor: Colors.white,
           icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[600]),
-          value: _managers[0],
+          // value: _managers[0],
 
           onChanged: (newValue) {
-            // print(newValue);
             this.setValue(context, newValue);
           },
 
           items: _managers.map( (value) {{
             return DropdownMenuItem<String>(
-
-              value: value,
+              value: value.id,
               child: Container(
                 // alignment: Alignment.centerRight,
-                child: Text(value, style: TextStyle(color: Colors.black, fontSize: 14),)),
+                child: Text('${value.firstName} ${value.lastName}', style: TextStyle(color: Colors.black, fontSize: 16),)),
             );
           }}).toList(),
         ),

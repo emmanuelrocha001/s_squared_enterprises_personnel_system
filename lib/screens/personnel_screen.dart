@@ -15,7 +15,9 @@ class PersonnelScreen extends StatelessWidget {
     ));
   }
 
-  void _setCurrentManager(BuildContext context, String newValue) {
+
+  void _setCurrentManager(BuildContext context, final newValue) {
+    print('hello');
     Provider.of<Personnel>(context, listen: false).setSelectedManager(newValue);
     print(newValue);
   }

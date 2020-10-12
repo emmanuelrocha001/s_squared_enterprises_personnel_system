@@ -12,14 +12,14 @@ class Helper extends StatelessWidget {
       backgroundColor: Colors.transparent,
       context: context, builder: (ctx) {
       return Container(
-        height: (mediaQuery.size.height )* .7,
+        height: (mediaQuery.size.height )* .85,
         child: Card(
           margin: EdgeInsets.symmetric(horizontal: 0),
           elevation: 1,
           // color: Colors.red,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15), topRight: Radius.circular(15)
+              topLeft: Radius.circular(8), topRight: Radius.circular(8)
             )),
           child: Scrollbar(
             child: SingleChildScrollView(

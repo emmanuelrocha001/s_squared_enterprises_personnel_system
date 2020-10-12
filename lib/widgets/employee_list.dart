@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/personnel.dart';
 import '../widgets/employee_item.dart';
+import '../widgets/role_selector.dart';
+
 class EmployeeList extends StatefulWidget {
 
 
