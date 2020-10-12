@@ -30,7 +30,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
   void setRolesSelected(List<String> roles) {
     _rolesSelected = [...roles];
-    print(_rolesSelected);
   }
 
 
@@ -58,7 +57,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           _managerName = Provider.of<Personnel>(context, listen: false).getMangerNameByID(_employeeInfo['managerID']);
         }
       });
-      print(_employeeInfo);
     }
   }
 
@@ -151,6 +149,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   @override
   Widget build(BuildContext context) {
     final styleTheme = Theme.of(context);
+    print('building employee form');
+    print(_employeeInfo);
     return Form(
       key: _form,
       child: Padding(
@@ -194,12 +194,13 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             if(!_generateID) Container(
               width: 400,
               child: ListTile(
+                key: ValueKey('employee_id_input'),
                 // leading: Icon(Icons.mail, size: 35, color: styleTheme.primaryColor,),
                 leading: Text('Employee ID:', style: TextStyle( color: Colors.grey[600], fontSize: 16)),
                 title: TextFormField(
                   // textInputAction: TextInputAction.next,
                   // keyboardType: TextInputType.emailAddress,
-                  // initialValue: _employeeInfo['street'],
+                  initialValue: _employeeInfo['employeeID'],
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) {
                     // FocusScope.of(context).requestFocus(_otherNode);
@@ -235,6 +236,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 title: TextFormField(
                   // textInputAction: TextInputAction.next,
                   // keyboardType: TextInputType.emailAddress,
+                  key: ValueKey('employee_first_name_input'),
+
                   initialValue: _employeeInfo['firstName'],
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) {
@@ -270,6 +273,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 leading: Text('Last Name:', style: TextStyle( color: Colors.grey[600], fontSize: 16)),
                 title: TextFormField(
                   initialValue: _employeeInfo['lastName'],
+                  key: ValueKey('employee_last_name_input'),
+
                   // textInputAction: TextInputAction.next,
                   // keyboardType: TextInputType.emailAddress,
                   // initialValue: _employeeInfo['street'],
