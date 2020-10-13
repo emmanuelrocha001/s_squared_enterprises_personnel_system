@@ -3,7 +3,6 @@ import 'package:flushbar/flushbar.dart';
 
 class Helper extends StatelessWidget {
 
-
   static void showActionScreen(BuildContext context, content, {bool resetLocalInventory=false}) {
     final mediaQuery = MediaQuery.of(context);
     showModalBottomSheet(
@@ -16,7 +15,6 @@ class Helper extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.symmetric(horizontal: 0),
           elevation: 1,
-          // color: Colors.red,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(8), topRight: Radius.circular(8)
@@ -37,8 +35,6 @@ class Helper extends StatelessWidget {
   }
 
   static void showMessageTop(BuildContext context, String message,{bool error: false}) {
-    // final mediaQuery = MediaQuery.of(context);
-    // final styleTheme = Theme.of(context);
     Flushbar(
       backgroundColor: Colors.white,
       messageText: Text(message, style: TextStyle(color: error ? Colors.red : Colors.green),),
@@ -48,9 +44,7 @@ class Helper extends StatelessWidget {
       maxWidth: 400,
       flushbarPosition: FlushbarPosition.TOP,
       forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-
       borderRadius: 8,
-      // title: 'Error message:',
       message: message,
 
 

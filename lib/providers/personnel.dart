@@ -33,8 +33,6 @@ class Personnel with ChangeNotifier{
 
   String _selectedManager = '';
 
-
-
   List<Employee> get personnel {
     return [..._personnel];
   }
@@ -64,6 +62,7 @@ class Personnel with ChangeNotifier{
   }
 
   bool isIDAvailable(String id) {
+    // check to prevent id duplication
     var index = _personnel.indexWhere((element) => element.employeeID == id);
     if(index == -1) {
       return true;
@@ -74,8 +73,6 @@ class Personnel with ChangeNotifier{
 
   void setSelectedManager(String newValue) {
     if(newValue != _selectedManager) {
-      print('new manager selected: $_selectedManager');
-
       _selectedManager = newValue;
       fetchPersonnel();
     }
@@ -95,12 +92,7 @@ class Personnel with ChangeNotifier{
           'roles': rolesSelected,
         }),
       );
-      print(response);
 
-      final data = json.decode(response.body);
-      print(employeeID.length);
-      print('doc id');
-      print(data);
       fetchPersonnel();
       notifyListeners();
 
@@ -117,7 +109,6 @@ class Personnel with ChangeNotifier{
 
 
   Future<Map<String,dynamic>> updateEmployee({String id,String firstName, String lastName, List<String> rolesSelected}) async {
-     // check if manager role is present
     try {
       final url = '$baseURL/personnel/$id.json';
 
@@ -129,13 +120,7 @@ class Personnel with ChangeNotifier{
           'roles': rolesSelected,
         }),
       );
-      print('employee info retrieved');
 
-      final data = json.decode(response.body);
-      print(data);
-      // print(employeeID.length);
-      print('doc id');
-      print(data);
       fetchPersonnel();
       notifyListeners();
 
@@ -144,7 +129,6 @@ class Personnel with ChangeNotifier{
       };
 
     }catch(error) {
-      print(error);
       return {
         'success': false
       };
@@ -153,7 +137,6 @@ class Personnel with ChangeNotifier{
 
 
   Future<Map<String,dynamic>> fetchPersonnel() async {
-    // check if maneger role is present
     print('fetching personnel');
     try {
       final url = '$baseURL/personnel.json';
@@ -218,7 +201,6 @@ class Personnel with ChangeNotifier{
         _managers = [...tempManagers];
         _employees = [...temp];
         _personnel = [...tempPersonnel];
-        print(_personnel);
         notifyListeners();
       }
       return {
@@ -231,8 +213,6 @@ class Personnel with ChangeNotifier{
       };
     }
   }
-
-
 
 
 }

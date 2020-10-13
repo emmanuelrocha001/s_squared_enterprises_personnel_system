@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/personnel.dart';
 import './screens/personnel_screen.dart';
-// Import the firebase_core plugin
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
 
-  // Create the initialization Future outside of `build`:
 
   @override
   Widget build(BuildContext context) {

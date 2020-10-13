@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:s_squared_enterprises_personnel_system/providers/personnel.dart';
 import '../widgets/manager_selector.dart';
 import '../widgets/employee_list.dart';
-import '../widgets/loading.dart';
 import '../screens/add_employee_screen.dart';
 import '../helper.dart';
 class PersonnelScreen extends StatefulWidget {

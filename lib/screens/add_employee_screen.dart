@@ -36,11 +36,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   @override
   void initState() {
     super.initState();
-    // set to firs value if available
-    // final managerList  = Provider.of<Personnel>(context, listen: false).managers;
-    // if(managerList.length > 0) {
-    //   _employeeInfo['managerID'] = Provider.of<Personnel>(context, listen: false).managers[0];
-    // }
+    // set initial values if available
     if(widget.id != '') {
       var employeeInfo = Provider.of<Personnel>(context, listen: false).getEmployeeByID(widget.id);
       if(_employeeInfo['managerID'] != '') {
@@ -75,6 +71,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         Helper.showMessageTop(context, 'Please select a Manager.',error: true);
         return;
       }
+
       // employee id cannot be reused(only check if ID is not automatically generated);
       if(_employeeInfo['employeeID'] != '' && !_generateID) {
         var available = Provider.of<Personnel>(context, listen: false).isIDAvailable(_employeeInfo['employeeID']);
@@ -116,23 +113,13 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
       _form.currentState.save();
 
-      // if(_employeeInfo['managerID'] == '' && !_rolesSelected.contains('Director')) {
-      //   Helper.showMessageTop(context, 'Please select a Manager.',error: true);
-      //   return;
-      // }
+
       final res = await Provider.of<Personnel>(context, listen: false).updateEmployee(
         id: widget.id,
         firstName: (_employeeInfo['firstName'] as String).replaceAll(new RegExp(r"\s+"), ""),
         lastName: (_employeeInfo['lastName'] as String).replaceAll(new RegExp(r"\s+"), ""),
         rolesSelected: _rolesSelected,
       );
-      // final res = await Provider.of<Personnel>(context, listen: false).addEmployee(
-      //   firstName: (_employeeInfo['firstName'] as String).replaceAll(new RegExp(r"\s+"), ""),
-      //   lastName: (_employeeInfo['lastName'] as String).replaceAll(new RegExp(r"\s+"), ""),
-      //   employeeID: _employeeInfo['employeeID'],
-      //   managerID: _employeeInfo['managerID'],
-      //   rolesSelected: _rolesSelected,
-      // );
 
       if(res['success']) {
         Navigator.of(context).pop({
@@ -233,13 +220,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     }
                   },
 
-                  // decoration: InputDecoration(
-                  //   border: InputBorder.none,
-                  //   hintText: 'ex: 001',
-                  //   hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
-
-
-                  // ),
                 ),
               ),
             ),
@@ -294,10 +274,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   key: ValueKey('employee_last_name_input'),
                   autovalidateMode: AutovalidateMode.always,
 
-
-                  // textInputAction: TextInputAction.next,
-                  // keyboardType: TextInputType.emailAddress,
-                  // initialValue: _employeeInfo['street'],
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) {
                     // FocusScope.of(context).requestFocus(_otherNode);
@@ -314,12 +290,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     }
                   },
 
-                  // decoration: InputDecoration(
-                  //   border: InputBorder.none,
-                  //   hintText: 'ex: Washington',
-                  //   hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
-
-                  // ),
                 ),
               ),
             ),

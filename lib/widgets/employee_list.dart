@@ -40,9 +40,6 @@ class _EmployeeListState extends State<EmployeeList> {
       width: mediaQuery.size.width,
       color: Colors.grey.withOpacity(.1),
       child: Container(
-        // color: Colors.grey.withOpacity(.1),
-        // padding: EdgeInsets.all(10),
-        // height: 500,
         width: Math.min(600, mediaQuery.size.width),
         child: Column(
           children: [

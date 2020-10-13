@@ -13,7 +13,6 @@ class ManagerSelector extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final _managers = Provider.of<Personnel>(context,).managers;
-    print(_managers);
     return Container(
       // color: Colors.red,
       width: 400,
