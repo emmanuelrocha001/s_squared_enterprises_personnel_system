@@ -12,8 +12,9 @@ class Entrie extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 4),
           alignment: Alignment.centerLeft,
-          child: Text(content),
+          child: FittedBox(child: Text(content)),
       ),
     );
   }

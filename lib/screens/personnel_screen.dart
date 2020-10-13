@@ -6,22 +6,23 @@ import '../widgets/employee_list.dart';
 import '../widgets/loading.dart';
 import '../screens/add_employee_screen.dart';
 import '../helper.dart';
-class PersonnelScreen extends StatelessWidget {
+class PersonnelScreen extends StatefulWidget {
 
+  @override
+  _PersonnelScreenState createState() => _PersonnelScreenState();
+}
 
+class _PersonnelScreenState extends State<PersonnelScreen> {
   void _addEmployee(BuildContext context) {
     Helper.showActionScreen(context, Container(
       child: AddEmployeeScreen(),
     ));
   }
 
-
   void _setCurrentManager(BuildContext context, final newValue) {
-    print('hello');
     Provider.of<Personnel>(context, listen: false).setSelectedManager(newValue);
     print(newValue);
   }
-
 
   Future<void> _fetchPersonnel(BuildContext context) async{
     final res = await Provider.of<Personnel>(context, listen: false).fetchPersonnel();
@@ -33,6 +34,12 @@ class PersonnelScreen extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchPersonnel(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
@@ -41,35 +48,37 @@ class PersonnelScreen extends StatelessWidget {
         title: Text('S-Squared Enterprises Personnel System'),
     );
 
-    final styleTheme = Theme.of(context).primaryColor;
+    // final styleTheme = Theme.of(context).primaryColor;
     return Scaffold(
       appBar: appBar,
-
       body: Container(
         height: mediaQuery.size.height-appBar.preferredSize.height,
         width: mediaQuery.size.width,
         padding: EdgeInsets.symmetric(vertical: 20),
-        child: FutureBuilder(
-          future: _fetchPersonnel(context),
-          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting ?
-            LoadingOverlay() :
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ManagerSelector(setValue: _setCurrentManager,),
-                ),
-                EmployeeList(),
-                FlatButton.icon(
-                  onPressed: () {
-                    _addEmployee(context);
-                  },
-                  icon: Icon(Icons.add_circle_outline, color: Colors.blue,),
-                  label: Text('Add Employee', style: TextStyle(color: Colors.blue),))
-
-              ],
+        child:
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      child:
+                          ManagerSelector(setValue: _setCurrentManager,),
+                    ),
+                  ),
+                  EmployeeList(),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: FlatButton.icon(
+                      onPressed: () {
+                        _addEmployee(context);
+                      },
+                      icon: Icon(Icons.add_circle_outline, color: Colors.blue,),
+                      label: Text('Add Employee', style: TextStyle(color: Colors.blue),)),
+                  )
+                ],
+              ),
             ),
-        ),
       )
     );
   }

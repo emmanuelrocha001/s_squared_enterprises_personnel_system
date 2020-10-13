@@ -28,12 +28,6 @@ class _EmployeeListState extends State<EmployeeList> {
     setState(() {
       employees = Provider.of<Personnel>(context, listen: false).employees;
     });
-    // var res = await Provider.of<Personnel>(context, listen: false).employees;
-    // if(res['success']) {
-    //   employees = res['employees'];
-    // } else {
-    //   print('something went wrong');
-    // }
   }
 
   @override
@@ -43,42 +37,52 @@ class _EmployeeListState extends State<EmployeeList> {
     final employees = personnel.employees;
     final mediaQuery = MediaQuery.of(context);
     return Container(
+      width: mediaQuery.size.width,
       color: Colors.grey.withOpacity(.1),
-      // height: 500,
-      width: Math.min(600, mediaQuery.size.width),
-      child: Column(
-        children: [
-          Card(
-            margin: EdgeInsets.all(8),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Entrie('Employee ID'),
-                  Entrie('Last Name'),
-                  Entrie('First Name'),
-                ],
-              ),
-            ),
-          ),
+      child: Container(
+        // color: Colors.grey.withOpacity(.1),
+        // padding: EdgeInsets.all(10),
+        // height: 500,
+        width: Math.min(600, mediaQuery.size.width),
+        child: Column(
+          children: [
+            Container(
+              width: Math.min(600, mediaQuery.size.width),
 
-          Container(
-            width: Math.min(600, mediaQuery.size.width),
-            height: 400,
-            child: Scrollbar(
-              child: ListView.builder(
-              controller: _controller,
-                // controller: ,
-                itemCount: employees.length,
-                itemBuilder: (context,index) => EmployeeItem(
-                  employee: employees[index],
+              child: Card(
+
+                margin: EdgeInsets.all(8),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Entrie('Employee ID'),
+                      Entrie('Last Name'),
+                      Entrie('First Name'),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+
+            Container(
+              width: Math.min(600, mediaQuery.size.width),
+              height: 400,
+              child: Scrollbar(
+                child: ListView.builder(
+                controller: _controller,
+                  // controller: ,
+                  itemCount: employees.length,
+                  itemBuilder: (context,index) => EmployeeItem(
+                    employee: employees[index],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

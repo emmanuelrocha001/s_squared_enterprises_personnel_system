@@ -70,15 +70,24 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
       _form.currentState.save();
 
+      // an employee must be assigned a manager(unless they have a director role)
       if(_employeeInfo['managerID'] == '' && !_rolesSelected.contains('Director')) {
         Helper.showMessageTop(context, 'Please select a Manager.',error: true);
         return;
+      }
+      // employee id cannot be reused(only check if ID is not automatically generated);
+      if(_employeeInfo['employeeID'] != '' && !_generateID) {
+        var available = Provider.of<Personnel>(context, listen: false).isIDAvailable(_employeeInfo['employeeID']);
+        if(!available) {
+          Helper.showMessageTop(context, 'Employee ID is not available.',error: true);
+          return;
+        }
       }
 
       final res = await Provider.of<Personnel>(context, listen: false).addEmployee(
         firstName: (_employeeInfo['firstName'] as String).replaceAll(new RegExp(r"\s+"), ""),
         lastName: (_employeeInfo['lastName'] as String).replaceAll(new RegExp(r"\s+"), ""),
-        employeeID: _employeeInfo['employeeID'],
+        employeeID: _generateID ? '' : _employeeInfo['employeeID'],
         managerID: _employeeInfo['managerID'],
         rolesSelected: _rolesSelected,
       );
@@ -173,25 +182,29 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   leading: Text('Manager: ${_managerName}', style: TextStyle( color: Colors.grey[600], fontSize: 16)),
                 ),
               ),
-            widget.id == '' ? Container(
-              width: 300,
-              child: CheckboxListTile(
-                value: _generateID,
-                title: const Text('Auto generate Employee ID'),
-                onChanged: (bool value) {
-                  setState(() {
-                    _generateID = value;
-                  });
-                }
-              )
-              ,
+            widget.id == '' ? Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 300,
+                child: CheckboxListTile(
+                  value: _generateID,
+                  title: const Text('Auto generate Employee ID'),
+                  subtitle: const Text('* will disable Employee ID input field'),
+                  onChanged: (bool value) {
+                    setState(() {
+                      _generateID = value;
+                    });
+                  }
+                )
+                ,
+              ),
             ) : Container(
               width: 400,
               child: ListTile(
                 leading: Text('Employee ID: ${_employeeInfo['employeeID'] == '' ? widget.id : _employeeInfo['employeeID']}', style: TextStyle( color: Colors.grey[600], fontSize: 16)),
               ),
             ),
-            if(!_generateID) Container(
+            if(widget.id == '') Container(
               width: 400,
               child: ListTile(
                 key: ValueKey('employee_id_input'),
@@ -200,6 +213,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 title: TextFormField(
                   // textInputAction: TextInputAction.next,
                   // keyboardType: TextInputType.emailAddress,
+                  autovalidateMode: AutovalidateMode.always,
+                  enabled: !_generateID,
+
                   initialValue: _employeeInfo['employeeID'],
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) {
@@ -210,20 +226,20 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     _employeeInfo['employeeID'] = value;
                   },
                   validator: (value) {
-                    if(value.isEmpty) {
+                    if(value.isEmpty && !_generateID) {
                       return '* Required Field';
                     } else {
                       return null;
                     }
                   },
 
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'ex: 001',
-                    hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
+                  // decoration: InputDecoration(
+                  //   border: InputBorder.none,
+                  //   hintText: 'ex: 001',
+                  //   hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
 
 
-                  ),
+                  // ),
                 ),
               ),
             ),
@@ -237,6 +253,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   // textInputAction: TextInputAction.next,
                   // keyboardType: TextInputType.emailAddress,
                   key: ValueKey('employee_first_name_input'),
+                  autovalidateMode: AutovalidateMode.always,
+
 
                   initialValue: _employeeInfo['firstName'],
                   textInputAction: TextInputAction.next,
@@ -255,13 +273,13 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     }
                   },
 
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'ex: Jackson',
-                    hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
+                  // decoration: InputDecoration(
+                  //   border: InputBorder.none,
+                  //   hintText: 'ex: Jackson',
+                  //   hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
 
 
-                  ),
+                  // ),
                 ),
               ),
             ),
@@ -274,6 +292,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 title: TextFormField(
                   initialValue: _employeeInfo['lastName'],
                   key: ValueKey('employee_last_name_input'),
+                  autovalidateMode: AutovalidateMode.always,
+
 
                   // textInputAction: TextInputAction.next,
                   // keyboardType: TextInputType.emailAddress,
@@ -294,13 +314,12 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     }
                   },
 
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'ex: Washington',
-                    hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
+                  // decoration: InputDecoration(
+                  //   border: InputBorder.none,
+                  //   hintText: 'ex: Washington',
+                  //   hintStyle: TextStyle( color: Colors.grey, fontSize: 16),
 
-
-                  ),
+                  // ),
                 ),
               ),
             ),

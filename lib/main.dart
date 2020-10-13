@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         create: (ctx) => Personnel(),),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'S-Squared Enterprises Personnel System',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
 

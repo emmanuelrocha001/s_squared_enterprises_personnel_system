@@ -27,19 +27,16 @@ class Personnel with ChangeNotifier{
   // var baseURL = 'https://firestore.googleapis.com/v1/projects/test-backend-eb284/databases/(default)/documents';
 
   List<Employee> _employees = [];
+  List<Employee> _personnel = [];
   List<Employee> _managers = [];
   List<String> _roles = ['Director','Support', 'IT', 'Analyst','Sales', 'Accounting'];
 
   String _selectedManager = '';
 
 
-  void setSelectedManager(String newValue) {
-    if(newValue != _selectedManager) {
-      _selectedManager = newValue;
-      fetchPersonnel();
-    }
-    // call backend
-    print('new manager selected: $_selectedManager');
+
+  List<Employee> get personnel {
+    return [..._personnel];
   }
 
 
@@ -66,11 +63,28 @@ class Personnel with ChangeNotifier{
     return '${_managers[index].firstName} ${_managers[index].lastName}';
   }
 
+  bool isIDAvailable(String id) {
+    var index = _personnel.indexWhere((element) => element.employeeID == id);
+    if(index == -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void setSelectedManager(String newValue) {
+    if(newValue != _selectedManager) {
+      print('new manager selected: $_selectedManager');
+
+      _selectedManager = newValue;
+      fetchPersonnel();
+    }
+    // call backend
+  }
+
   Future<Map<String,dynamic>> addEmployee({String managerID, String employeeID, String firstName, String lastName, List<String> rolesSelected}) async {
-    // check if manager role is present
     try {
       final url = '$baseURL/personnel.json';
-
       final response = await http.post(
         url,
         body: json.encode({
@@ -137,12 +151,10 @@ class Personnel with ChangeNotifier{
     }
   }
 
-  Future<Map<String,dynamic>> fetchManagers() async {
-
-  }
 
   Future<Map<String,dynamic>> fetchPersonnel() async {
     // check if maneger role is present
+    print('fetching personnel');
     try {
       final url = '$baseURL/personnel.json';
 
@@ -153,13 +165,30 @@ class Personnel with ChangeNotifier{
       final data = json.decode(response.body) as Map<String,dynamic>;
       if(data != null) {
         final temp = [];
-        List<Employee> tempManagers = [];
+        var tempPersonnel = [];
+
+        List<Employee> tempManagers = [
+          new Employee(id: '', employeeID: '', firstName: '', lastName: '', managerID: '', roles: [])
+        ];
+
         data.forEach((key, value) {
-          // check if
+          //
           var current = value as Map<String,dynamic>;
-          var current_roles = [...current['roles']];
+
+          // store personnel(to check employee ID is not duplicate)
+          tempPersonnel.add(
+            new Employee(
+                id: key,
+                employeeID: current.containsKey('employeeID') ? current['employeeID'] : '',
+                firstName: current['firstName'],
+                lastName: current['lastName'],
+                managerID: current['managerID'],
+                roles: [...current['roles']],
+              ),
+          );
 
           // separates managers from employees
+          var current_roles = [...current['roles']];
           if(current_roles.contains('Director')) {
             tempManagers.add(
               new Employee(
@@ -188,6 +217,8 @@ class Personnel with ChangeNotifier{
         });
         _managers = [...tempManagers];
         _employees = [...temp];
+        _personnel = [...tempPersonnel];
+        print(_personnel);
         notifyListeners();
       }
       return {
