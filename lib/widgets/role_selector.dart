@@ -44,7 +44,7 @@ class _RoleSelectorState extends State<RoleSelector> {
     final roles = Provider.of<Personnel>(context, listen: false).roles;
 
     var editDirectorRole = true;
-    if((widget.initialRoles as List<String>).contains('Director')) {
+    if(widget.initialRoles != null && (widget.initialRoles as List<String>).contains('Director')) {
       editDirectorRole = false;
     }
     return Scrollbar(
