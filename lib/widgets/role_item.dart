@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import '../helper.dart';
 
 class RoleItem extends StatefulWidget {
   final role;
   final Function addRole;
   final Function deleteRole;
+  final canEdit;
   final initiallySelected;
   RoleItem({
     @required this.role,
     @required this.addRole,
     @required this.deleteRole,
+    @required this.canEdit,
     this.initiallySelected=false,
   });
 
@@ -32,15 +35,20 @@ class _RoleItemState extends State<RoleItem> {
       value: _selected,
       title: Text(widget.role),
       onChanged: (bool value) {
-        if(value) {
-          widget.addRole(widget.role);
+        if(widget.canEdit) {
+          if(value) {
+            widget.addRole(widget.role);
+          } else {
+            widget.deleteRole(widget.role);
+          }
+          setState(() {
+            _selected = value;
+          });
         } else {
-          widget.deleteRole(widget.role);
+          Helper.showMessageTop(context, 'Cannot edit Director role', error: true);
         }
-        setState(() {
-          _selected = value;
-        });
       }
+
     );
   }
 }

@@ -21,7 +21,6 @@ class _RoleSelectorState extends State<RoleSelector> {
 
   List<String> _rolesSelected  = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -43,6 +42,11 @@ class _RoleSelectorState extends State<RoleSelector> {
   @override
   Widget build(BuildContext context) {
     final roles = Provider.of<Personnel>(context, listen: false).roles;
+
+    var editDirectorRole = true;
+    if((widget.initialRoles as List<String>).contains('Director')) {
+      editDirectorRole = false;
+    }
     return Scrollbar(
       child: ListView.builder(
       controller: _controller,
@@ -52,7 +56,12 @@ class _RoleSelectorState extends State<RoleSelector> {
           if(widget.initialRoles != null) {
             initiallySelected = (widget.initialRoles as List<String>).contains(roles[index]);
           }
+          var canEdit = true;
+          if(!editDirectorRole && roles[index] == 'Director') {
+            canEdit = false;
+          }
           return RoleItem(
+            canEdit: canEdit,
             role: roles[index],
             addRole: addRole,
             deleteRole: deleteRole,
